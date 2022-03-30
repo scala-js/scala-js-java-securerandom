@@ -1,0 +1,42 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scalaversion: ["2.11.12", "2.12.15", "2.13.8"]
+        jsEnvKind: [NodeJS, JSDOMNodeJS, Firefox, Chrome]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: olafurpg/setup-scala@v10
+        with:
+          java-version: "adopt@1.8"
+      - uses: coursier/cache-action@v5
+
+      - name: Setup Node.js v14 LTS
+        if: matrix.jsEnvKind == 'NodeJS' || matrix.jsEnvKind == 'JSDOMNodeJS'
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 14
+
+      - name: Install jsdom
+        if: matrix.jsEnvKind == 'JSDOMNodeJS'
+        run: npm install
+
+      - name: Test JVM
+        run: sbt "++${{ matrix.scalaversion }}" testSuiteJVM/test
+      - name: Test JS
+        run: sbt "++${{ matrix.scalaversion }}" "set ThisBuild/jsEnvKind := build.JSEnvKind.${{ matrix.jsEnvKind }}" testSuiteJS/test
+      - name: Doc generation
+        run: sbt "++${{ matrix.scalaversion }}" root/doc
+      - name: Header check
+        run: sbt "++${{ matrix.scalaversion }}" root/headerCheck testSuiteJVM/test:headerCheck testSuiteJS/test:headerCheck
