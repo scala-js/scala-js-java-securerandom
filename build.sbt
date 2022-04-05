@@ -18,7 +18,7 @@ inThisBuild(Def.settings(
   crossScalaVersions := Seq("2.12.15", "2.11.12", "2.13.8"),
   scalaVersion := crossScalaVersions.value.head,
 
-  version := "1.0.0",
+  version := "1.0.1-SNAPSHOT",
   organization := "org.scala-js",
   scalacOptions ++= Seq(
     "-encoding", "utf-8",
