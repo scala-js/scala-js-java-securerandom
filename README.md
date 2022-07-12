@@ -20,6 +20,7 @@ Supported environments are:
 
 * Node.js,
 * Browsers,
+* Using [JSDOM](https://github.com/jsdom/jsdom) >= 20.0.0
 * Other environments that provide `crypto.getRandomValues(typedArray)`, from the Web Crypto API.
 
 ## License
