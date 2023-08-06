@@ -15,7 +15,7 @@ lazy val jsEnvKind =
   settingKey[JSEnvKind]("Use Node.js or a headless browser for running Scala.js tests")
 
 inThisBuild(Def.settings(
-  crossScalaVersions := Seq("2.12.15", "2.11.12", "2.13.8"),
+  crossScalaVersions := Seq("2.12.15", "2.11.12", "2.13.8", "3.3.0"),
   scalaVersion := crossScalaVersions.value.head,
 
   version := "1.0.1-SNAPSHOT",
